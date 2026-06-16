@@ -5,13 +5,13 @@ class StudentRepository:
     def __init__(self):
         self.connection = get_connection()
 
-    def generate_roll_number(self, class_name, section):
+    def generate_roll_number(self, section_id):
         conn = self.connection
         cursor = conn.cursor()
         cursor.execute('''
             SELECT MAX(roll_number) FROM students 
-            WHERE class_name = ? AND section = ?
-        ''', (class_name, section))
+            WHERE section_id = ?
+        ''', (section_id,))
         result = cursor.fetchone()
         max_roll_number = result[0] if result[0] is not None else 0
         return max_roll_number + 1
@@ -30,12 +30,12 @@ class StudentRepository:
         conn = self.connection
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO students (name, father_name, class_name, section, roll_number, contact_number)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO students (name, father_name, section_id, roll_number, contact_number)
+            VALUES (?, ?, ?, ?, ?)
         ''', 
         (
-            student.name, student.father_name, student.class_name, student.section, 
-            student.roll_number, student.contact_number
+            student.name, student.father_name,  student.section_id, student.roll_number, 
+            student.contact_number
         ))
         conn.commit()
         student_id = cursor.lastrowid
@@ -46,10 +46,9 @@ class StudentRepository:
             student_id=row[0],
             name=row[1],
             father_name=row[2],
-            class_name=row[3],
-            section=row[4],
-            roll_number=row[5],
-            contact_number=row[6]
+            section_id=row[3],
+            roll_number=row[4],
+            contact_number=row[5]
         )
 
     def get_all_students(self):
@@ -101,13 +100,13 @@ class StudentRepository:
         cursor.execute('''
             UPDATE students
             SET 
-                       name = ?, father_name = ?, class_name = ?, section = ?, 
+                       name = ?, father_name = ?, section_id = ?, 
                        roll_number = ?, contact_number = ?
             WHERE 
                        student_id = ?
         ''', 
         (
-            student.name, student.father_name, student.class_name, student.section, 
+            student.name, student.father_name, student.section_id, 
             student.roll_number, student.contact_number, student.student_id
         ))
         if cursor.rowcount == 0:
