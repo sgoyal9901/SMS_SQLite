@@ -13,6 +13,8 @@ class SectionService:
         class_obj = self.class_repository.get_class_by_id(class_id)
         if not class_obj:
             raise ValueError(f"No class found")
+        if self.section_repository.get_section_by_name(section_name, class_id):
+            raise ValueError("Section already exists")
         self.section_repository.add_section(section_name, class_id)
 
     def get_all_sections(self):

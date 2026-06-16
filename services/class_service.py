@@ -8,6 +8,8 @@ class ClassService:
     def add_class(self, class_name):
         if not class_name.strip():
             raise ValueError("Class name cannot be empty")
+        if self.class_repository.get_class_by_name(class_name):
+            raise ValueError("Class already exists")
         self.class_repository.add_class(class_name)
         
     def get_all_classes(self):

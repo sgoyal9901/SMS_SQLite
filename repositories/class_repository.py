@@ -11,6 +11,16 @@ class ClassRepository:
         cursor.execute('INSERT INTO classes (class_name) VALUES (?)', (class_name,))
         conn.commit()
 
+    def get_class_by_name(self, class_name):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM classes WHERE class_name = ?', (class_name,))
+        row = cursor.fetchone()
+        if row:
+            school_class = self.row_to_class(row)
+            return school_class
+        return None
+
     def get_all_classes(self):
         conn = self.connection
         cursor = conn.cursor()

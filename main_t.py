@@ -173,21 +173,24 @@ while True:
     elif choice == '5':
         print("Enter student ID to delete: ")
         student_id = input()
-        student = student_service.get_student_by_id(student_id)
-        if not student:
-            print("Student not found.")
-        else:
-            print(student)
-            print("Are you sure you want to delete this student? (Y/N): ")
-            confirm = input().upper()
-            if confirm == 'Y':
-                try:
-                    student_service.delete_student(student_id)
-                    print("Student deleted successfully.")
-                except ValueError as e:
-                    print(f"Error: {e}")
+        try:
+            student = student_service.get_student_by_id(student_id)
+            if not student:
+                print("Student not found.")
             else:
-                print("Deletion cancelled.")
+                print(student)
+                print("Are you sure you want to delete this student? (Y/N): ")
+                confirm = input().upper()
+                if confirm == 'Y':
+                    try:
+                        student_service.delete_student(student_id)
+                        print("Student deleted successfully.")
+                    except ValueError as e:
+                        print(f"Error: {e}")
+                else:
+                    print("Deletion cancelled.")
+        except ValueError as e:
+            print(f"Error: {e}")
 
     elif choice == '6':
         students = student_service.get_all_students()

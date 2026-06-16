@@ -12,6 +12,16 @@ class SectionRepository:
                         VALUES (?, ?)', (section_name, class_id))
         conn.commit()
 
+    def get_section_by_name(self, section_name, class_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM sections WHERE section_name = ? AND class_id = ?', (section_name, class_id))
+        row = cursor.fetchone()
+        if row:
+            section = self.rows_to_section(row)
+            return section
+        return None
+
     def get_all_sections(self):
         conn = self.connection
         cursor = conn.cursor()
