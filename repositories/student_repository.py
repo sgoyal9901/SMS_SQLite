@@ -112,3 +112,19 @@ class StudentRepository:
         if cursor.rowcount == 0:
             raise ValueError(f"No student found with ID {student.student_id}")
         conn.commit()
+
+    def count_students_in_section(self, section_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM students WHERE section_id = ?', (section_id,))
+        count = cursor.fetchone()[0]
+        return count
+    
+    def count_students_in_class(self, class_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM students JOIN sections \
+                       ON students.section_id = sections.section_id \
+                       WHERE sections.class_id = ?', (class_id,))
+        count = cursor.fetchone()[0]
+        return count

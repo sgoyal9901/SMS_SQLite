@@ -16,11 +16,13 @@ while True:
           4. Update student information
           5. Delete student
           6. Display all students
-          7. add class
-          8. view class
-          9. add section
-          10. view section
-          11. Exit
+          7. Add class
+          8. View class
+          9. Add section
+          10. View section
+          11. Delete class
+          12. Delete section
+          13. Exit
           ''')
     print("Enter your choice (1-11): ")
     choice = input()
@@ -48,7 +50,7 @@ while True:
         class_choice = input()
         class_id = classes[int(class_choice) - 1].class_id
         print("Enter section name: ")
-        section_name = input()
+        section_name = input().capitalize()
         try:
             section_service.add_section(section_name, class_id)
             print(f"Section added successfully.")
@@ -67,6 +69,70 @@ while True:
                 print(section)
         else:
             print("No sections found.")
+    
+
+    elif choice == '11':
+        classes = class_service.get_all_classes()
+        for i, class_ in enumerate(classes, start=1):
+            print(f"{i}. {class_.class_name}")
+        class_choice = input()
+        try:
+            class_id = classes[int(class_choice) - 1].class_id
+        except:
+            print("Invalid class choice.")
+            continue
+        sections = section_service.get_sections_by_class(class_id)
+        for i, section in enumerate(sections, start=1):
+            print(f"{i}. {section.section_name}")
+        print ("Are you sure you want to delete this class and sections? (Y/N): ")
+        confirm = input().upper()
+        if confirm == 'Y':
+            try:
+                class_service.delete_class(class_id)
+                print("Class deleted successfully.")
+            except ValueError as e:
+                print(f"Error: {e}")
+        else:
+            print("Deletion cancelled.")
+
+
+    elif choice == '12':
+        classes = class_service.get_all_classes()
+        for i, class_ in enumerate(classes, start=1):
+            print(f"{i}. {class_.class_name}")
+        class_choice = input()
+        try:
+            class_id = classes[int(class_choice) - 1].class_id
+        except:
+            print("Invalid class choice.")
+            continue
+        sections = section_service.get_sections_by_class(class_id)
+        for i, section in enumerate(sections, start=1):
+            print(f"{i}. {section.section_name}")
+        section_choice = input()
+        try:
+            section_id = sections[int(section_choice) - 1].section_id
+        except:
+            print("Invalid section choice.")
+            continue
+        print ("Are you sure you want to delete this section? (Y/N): ")
+        confirm = input().upper()
+        if confirm == 'Y':
+            try:
+                section_service.delete_section(section_id)
+                print("Section deleted successfully.")
+            except ValueError as e:
+                print(f"Error: {e}")
+        else:
+            print("Deletion cancelled.")
+
+    elif choice == '13':
+        print("Confirm exit? (Y/N): ")
+        confirm = input().upper()
+        if confirm == 'Y':
+            break
+        else:
+            continue
 
     elif choice == '1':
         print("Enter student name: ")
@@ -75,16 +141,30 @@ while True:
         father_name = input().title()
         print("Choose class: ")
         classes = class_service.get_all_classes()
+        if not classes:
+            print("No classes found.")
+            continue
         for i, class_ in enumerate(classes, start=1):
             print(f"{i}. {class_.class_name}")
         class_choice = input()
-        class_id = classes[int(class_choice) - 1].class_id
+        try:
+            class_id = classes[int(class_choice) - 1].class_id
+        except:
+            print("Invalid class choice.")
+            continue
         print("Choose section: ")
         sections = section_service.get_sections_by_class(class_id)
+        if not sections:
+            print("No sections found.")
+            continue
         for i, section in enumerate(sections, start=1):
             print(f"{i}. {section.section_name}")
         section_choice = input()
-        section_id = sections[int(section_choice) - 1].section_id
+        try:
+            section_id = sections[int(section_choice) - 1].section_id
+        except:
+            print("Invalid section choice.")
+            continue
         print("Enter contact number: ")
         contact_number = input()
 
@@ -110,11 +190,12 @@ while True:
         print("Enter contact number: ")
         contact_number = input()
         try:
-            student = student_service.get_student_by_contact_number(contact_number)
-            if student:
-                print(student)
-            else:
-                print("Student not found.")
+            students = student_service.get_students_by_contact_number(contact_number)
+            for student in students:
+                if student:
+                    print(student)
+                else:
+                    print("Student not found.")
         except ValueError as e:
             print(f"Error: {e}")
 
@@ -159,7 +240,7 @@ while True:
                 if name is None and father_name is None and section_id is None and contact_number is None:
                     print("No changes made.")
                     print(student)
-                
+                    continue
                 try:
                     student = student_service.update_student\
                         (student_id, name, father_name, section_id, contact_number)    

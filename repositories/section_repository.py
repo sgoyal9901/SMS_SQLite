@@ -60,3 +60,11 @@ class SectionRepository:
             section = self.rows_to_section(row)
             sections.append(section)
         return sections
+    
+    def delete_section(self, section_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM sections WHERE section_id = ?', (section_id,))
+        if cursor.rowcount == 0:
+            raise ValueError(f"No section found with ID {section_id}")
+        conn.commit()

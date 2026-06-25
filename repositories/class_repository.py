@@ -47,3 +47,11 @@ class ClassRepository:
             school_class= self.row_to_class(row)
             return school_class
         return None
+    
+    def delete_class(self, class_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM classes WHERE class_id = ?', (class_id,))
+        if cursor.rowcount == 0:
+            raise ValueError(f"No class found with ID {class_id}")
+        conn.commit()

@@ -78,6 +78,8 @@ class StudentService:
         repo = self.repository
         students = repo.get_students_by_contact_number(contact_number)
         all_students = []
+        if not students:
+            raise ValueError(f"No student found by contact number: {contact_number}")
         for student in students:
             student = self.get_student_details(student.student_id)
             all_students.append(student)

@@ -5,4 +5,4 @@ class Section:
         self.class_id = class_id
         
     def __str__(self):
-        return f"Class: {self.class_id} {self.section_name}"
+        return f"Section: {self.section_name}"

@@ -3,6 +3,8 @@ class Student:
         self.student_id = student_id
         self.name = name
         self.father_name = father_name
+        self.class_name = class_name
+        self.section_name = section_name
         self.section_id = section_id
         self.roll_number = roll_number
         self.contact_number = contact_number
