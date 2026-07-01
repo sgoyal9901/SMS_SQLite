@@ -29,5 +29,13 @@ def initialize_database():
                         FOREIGN KEY (section_id) REFERENCES sections(section_id)
                     )''')
 
+    cursor.execute('''CREATE TABLE IF NOT EXISTS attendance (
+                        attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        student_id INTEGER NOT NULL,
+                        status TEXT NOT NULL,
+                        date TEXT NOT NULL,
+                        UNIQUE (student_id, date),
+                        FOREIGN KEY (student_id) REFERENCES students(student_id)
+                    )''')
     conn.commit()
     

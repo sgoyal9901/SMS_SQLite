@@ -128,3 +128,15 @@ class StudentRepository:
                        WHERE sections.class_id = ?', (class_id,))
         count = cursor.fetchone()[0]
         return count
+    
+    def get_student_by_section(self, section_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM students WHERE section_id = ?\
+                       ORDER BY roll_number', (section_id,))
+        rows = cursor.fetchall()
+        students = []
+        for row in rows:
+            student = self.row_to_student(row)
+            students.append(student)
+        return students

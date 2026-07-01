@@ -1,5 +1,6 @@
 class Student:
-    def __init__(self, name, father_name, section_id, roll_number, contact_number, student_id=None, class_name=None, section_name=None):
+    def __init__(self, name, father_name, section_id, roll_number, contact_number, \
+                 student_id=None, class_name=None, section_name=None):
         self.student_id = student_id
         self.name = name
         self.father_name = father_name

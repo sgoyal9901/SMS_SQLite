@@ -136,3 +136,8 @@ class StudentService:
         class_ = self.class_repository.get_class_by_id(section.class_id)
         student.class_name = class_.class_name
         return student
+    
+    def get_student_by_section(self, section_id):
+        repo = self.repository
+        students = repo.get_student_by_section(section_id)
+        return students
