@@ -37,5 +37,10 @@ def initialize_database():
                         UNIQUE (student_id, date),
                         FOREIGN KEY (student_id) REFERENCES students(student_id)
                     )''')
-    conn.commit()
     
+    cursor.execute('''CREATE TABLE IF NOT EXISTS subjects (
+                        subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        subject_name TEXT NOT NULL UNIQUE)
+                    ''')
+    conn.commit()
+    conn.close()
