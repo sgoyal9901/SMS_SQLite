@@ -40,7 +40,16 @@ def initialize_database():
     
     cursor.execute('''CREATE TABLE IF NOT EXISTS subjects (
                         subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        subject_name TEXT NOT NULL UNIQUE)
-                    ''')
+                        subject_name TEXT NOT NULL UNIQUE
+                    )''')
+    
+    cursor.execute('''CREATE TABLE IF NOT EXISTS class_subjects (
+                        class_subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        class_id INTEGER NOT NULL,
+                        subject_id INTEGER NOT NULL,
+                        UNIQUE (class_id, subject_id),
+                        FOREIGN KEY (class_id) REFERENCES classes(class_id),
+                        FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+                    )''')
     conn.commit()
     conn.close()
