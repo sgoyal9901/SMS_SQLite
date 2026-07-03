@@ -5,11 +5,11 @@ class ClassSubjectsRepository:
     def __init__(self):
         self.connection = get_connection()
 
-    def add_class_subject(self, class_subject):
+    def add_class_subject(self, class_id, subject_id):
         conn = self.connection
         cursor = conn.cursor()
         cursor.execute('''INSERT INTO class_subjects (class_id, subject_id)
-                        VALUES (?, ?)''', (class_subject.class_id, class_subject.subject_id))
+                        VALUES (?, ?)''', (class_id, subject_id))
         conn.commit()
         class_subject_id = cursor.lastrowid
         return class_subject_id
@@ -24,7 +24,16 @@ class ClassSubjectsRepository:
     def view_subjects_by_class(self, class_id):
         conn = self.connection
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM class_subjects WHERE class_id = ?', (class_id,))
+        cursor.execute('''
+            SELECT
+                       class_subjects.class_subject_id,
+                       class_subjects.class_id,
+                       class_subjects.subject_id,
+                       subjects.subject_name
+            FROM class_subjects
+            JOIN subjects ON class_subjects.subject_id = subjects.subject_id
+            WHERE class_subjects.class_id = ?
+        ''', (class_id,))
         rows = cursor.fetchall()
         class_subjects = []
         for row in rows:
@@ -32,8 +41,26 @@ class ClassSubjectsRepository:
             class_subjects.append(class_subject)
         return class_subjects
     
-    def delete_class_subject(self, class_subject_id):
+    def delete_subject_from_class(self, class_id, subject_id):
         conn = self.connection
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM class_subjects WHERE class_subject_id = ?', (class_subject_id,))
+        cursor.execute('DELETE FROM class_subjects WHERE class_id = ? AND subject_id = ?',\
+                        (class_id, subject_id))
         conn.commit()
+
+    def count_classes_with_subject(self, subject_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM class_subjects WHERE subject_id = ?', (subject_id,))
+        count = cursor.fetchone()[0]
+        return count
+    
+    def subject_exist_in_class(self, class_id, subject_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM class_subjects WHERE class_id = ? AND subject_id = ?',\
+                        (class_id, subject_id))
+        row = cursor.fetchone()
+        if row:
+            return True
+        return False

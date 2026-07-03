@@ -56,3 +56,21 @@ class SubjectsRepository:
         if cursor.rowcount == 0:
             raise ValueError(f"No subject found with ID {subject_id}")
         conn.commit()
+
+    def subject_exists(self, subject_name):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM subjects WHERE subject_name = ?', (subject_name,))
+        row = cursor.fetchone()
+        if row:
+            return True
+        return False
+    
+    def subject_exists_by_id(self, subject_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM subjects WHERE subject_id = ?', (subject_id,))
+        row = cursor.fetchone()
+        if row:
+            return True
+        return False
