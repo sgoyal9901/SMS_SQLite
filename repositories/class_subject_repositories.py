@@ -18,7 +18,8 @@ class ClassSubjectsRepository:
         return ClassSubjects(
             class_subject_id=row[0],
             class_id=row[1],
-            subject_id=row[2]
+            subject_id=row[2],
+            subject_name=row[3]
         )
     
     def view_subjects_by_class(self, class_id):

@@ -16,7 +16,7 @@ def subjects_menu():
 4. Add subjects to class
 5. View subjects of class
 6. Delete subjects of class
-7.Back
+7. Back
         ''')
         print("Enter your choice (1-7): ")
         choice = input()
@@ -56,6 +56,7 @@ def subjects_menu():
                 subject_id = subjects[int(subject_choice) - 1].subject_id
             except:
                 print("Invalid subject choice.")
+                continue
             print("Are you sure you want to delete this subject? (Y/N): ")
             confirm = input().upper()
             if confirm == 'Y':
@@ -96,6 +97,7 @@ def subjects_menu():
                     continue
                 subject_id = subjects[int(subject_choice) - 1].subject_id
                 subject_ids.append(subject_id)
+                list(set(subject_ids))
             for subject_id in subject_ids:
                 try:
                     added = class_subject_service.add_subject_to_class(class_id, subject_id)
@@ -116,5 +118,42 @@ def subjects_menu():
             subjects = class_subject_service.view_subjects_by_class(class_id)
             if not subjects:
                 print("No subjects found.")
+                continue
+            print("Subjects of class:")
             for i, subject in enumerate(subjects, start=1):
                 print(f"{i}. {subject.subject_name}")
+
+        elif choice == '6':
+            print("Choose class: ")
+            try:
+                class_id = select_classes()
+            except ValueError as e:
+                print(f"Error: {e}")
+                continue
+            subjects = class_subject_service.view_subjects_by_class(class_id)
+            if not subjects:
+                print("No subjects found.")
+                continue
+            print("Subjects of class:")
+            for i, subject in enumerate(subjects, start=1):
+                print(f"{i}. {subject.subject_name}")
+            print("Select subject number: ")
+            subject_choices = input()
+            try:
+                subject_id = subjects[int(subject_choices) - 1].subject_id
+            except:
+                print("Invalid subject choice.")
+                continue
+            print("Are you sure you want to delete this subject? (Y/N): ")
+            confirm = input().upper()
+            if confirm == 'Y':
+                try:
+                    class_subject_service.delete_subject_from_class(class_id, subject_id)
+                    print("Subject deleted from class successfully.")
+                except ValueError as e:
+                    print(f"Error: {e}")
+            else:
+                print("Subject deletion from class cancelled.")
+
+        elif choice == '7':
+            break
