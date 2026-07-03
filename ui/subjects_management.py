@@ -97,7 +97,7 @@ def subjects_menu():
                     continue
                 subject_id = subjects[int(subject_choice) - 1].subject_id
                 subject_ids.append(subject_id)
-                list(set(subject_ids))
+                subject_ids = list(set(subject_ids))
             for subject_id in subject_ids:
                 try:
                     added = class_subject_service.add_subject_to_class(class_id, subject_id)
