@@ -1,6 +1,7 @@
 from services.attendance_service import AttendanceService
 from services.student_service import StudentService
-from ui.school_structure_menu import select_classes, select_sections
+import utils.input_helpers as help
+import utils.validators as val
 
 attendance_service = AttendanceService()
 student_service = StudentService()
@@ -18,13 +19,13 @@ def attendance_menu():
         if choice == '1':
             print("Enter class")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
             print("Enter section")
             try:
-                section_id = select_sections(class_id)
+                section_id = help.select_section(class_id)
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
@@ -45,22 +46,26 @@ def attendance_menu():
         elif choice == '2':
             print("Enter class")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
             print("Enter section")
             try:
-                section_id = select_sections(class_id)
+                section_id = help.select_section(class_id)
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
-            date = input("Enter date (YYYY-MM-DD): ")
-            try:
-                attendance_service.validate_date(date)
-            except ValueError as e:
-                print(f"Error: {e}")
-                continue
+            date = input("Enter date(YYYY-MM-DD) OR Leave blank for today: ")
+            if date.strip() == "":
+                from datetime import date
+                date = str(date.today())
+            else:    
+                try:
+                    val.validate_date(date)
+                except ValueError as e:
+                    print(f"Error: {e}")
+                    continue
             try:
                 attendances = attendance_service.get_attendance_by_section_and_date(section_id, date)
                 if not attendances:

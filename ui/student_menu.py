@@ -1,7 +1,7 @@
 from services.student_service import StudentService
 from services.class_service import ClassService
 from services.section_service import SectionService
-from ui.school_structure_menu import select_classes, select_sections
+import utils.input_helpers as help
 student_service = StudentService()
 class_service = ClassService()
 section_service = SectionService()
@@ -27,13 +27,13 @@ def student_menu():
             father_name = input().title()
             print("Choose class: ")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
             print("Choose section: ")
             try:
-                section_id = select_sections(class_id)
+                section_id = help.select_section(class_id)
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
@@ -93,13 +93,13 @@ def student_menu():
                     if update_class_or_section == 'Y':
                         print("Choose class: ")
                         try:
-                            class_id = select_classes()
+                            class_id = help.select_class()
                         except ValueError as e:
                             print(f"Error: {e}")
                             continue
                         print("Choose section: ")
                         try:
-                            section_id = select_sections(class_id)
+                            section_id = help.select_section(class_id)
                         except ValueError as e:
                             print(f"Error: {e}")
                             continue

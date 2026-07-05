@@ -1,7 +1,7 @@
 from services.subjects_service import SubjectsService
 from services.class_subject_service import ClassSubjectsService
-from ui.school_structure_menu import select_classes
 from models.subjects import Subjects
+import utils.input_helpers as help
 
 subjects_service = SubjectsService()
 class_subject_service = ClassSubjectsService()
@@ -71,7 +71,7 @@ def subjects_menu():
         elif choice == '4':
             print("Choose class: ")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
@@ -111,7 +111,7 @@ def subjects_menu():
         elif choice == '5':
             print("Choose class: ")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue
@@ -126,7 +126,7 @@ def subjects_menu():
         elif choice == '6':
             print("Choose class: ")
             try:
-                class_id = select_classes()
+                class_id = help.select_class()
             except ValueError as e:
                 print(f"Error: {e}")
                 continue

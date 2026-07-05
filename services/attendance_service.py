@@ -14,10 +14,6 @@ class AttendanceService:
             return ValueError\
                 ("Invalid status. Status must be 'P' (Present), 'A' (Absent), or 'L' (Leave).")
         return None
-    
-    
-    def validate_date(self, date):
-        val.validate_date(date)
 
     def mark_attendance(self, student_id, date, status):
         self.validate_attendance(status)
@@ -34,7 +30,7 @@ class AttendanceService:
             (student_id, date)
     
     def get_attendance_by_section_and_date(self, section_id, date):
-        self.validate_date(date)
+        val.validate_date(date)
         return self.attendance_repository.get_attendance_by_section_and_date\
             (section_id, date)
     
