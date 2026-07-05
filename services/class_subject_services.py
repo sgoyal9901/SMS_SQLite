@@ -1,5 +1,5 @@
-from repositories.class_subject_repositories import ClassSubjectsRepository
-from repositories.subjects_repositories import SubjectsRepository
+from repositories.class_subject_repo import ClassSubjectsRepository
+from repositories.subjects_repo import SubjectsRepository
 
 class ClassSubjectsService:
     def __init__(self):

@@ -51,5 +51,23 @@ def initialize_database():
                         FOREIGN KEY (class_id) REFERENCES classes(class_id),
                         FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
                     )''')
+    
+    cursor.execute('''CREATE TABLE IF NOT EXISTS exams (
+                        exam_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        exam_name TEXT NOT NULL,
+                        UNIQUE (exam_name)
+                    )''')
+    
+    cursor.execute('''CREATE TABLE IF NOT EXISTS result (
+                        result_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        student_id INTEGER NOT NULL,
+                        subject_id INTEGER NOT NULL,
+                        exam_id INTEGER NOT NULL,
+                        marks INTEGER NOT NULL,
+                        UNIQUE (student_id, subject_id, exam_id),
+                        FOREIGN KEY (student_id) REFERENCES students(student_id),
+                        FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
+                        FOREIGN KEY (exam_id) REFERENCES exams(exam_id)
+                    )''')
     conn.commit()
     conn.close()

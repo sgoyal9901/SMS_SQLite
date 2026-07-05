@@ -1,5 +1,5 @@
-from repositories.attendance_repositories import AttendanceRepository
-from repositories.student_repository import StudentRepository
+from repositories.attendance_repo import AttendanceRepository
+from repositories.student_repo import StudentRepository
 from models.attendance import Attendance
 
 class AttendanceService:

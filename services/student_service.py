@@ -1,6 +1,6 @@
-from repositories.student_repository import StudentRepository
-from repositories.section_repository import SectionRepository
-from repositories.class_repository import ClassRepository
+from repositories.student_repo import StudentRepository
+from repositories.section_repo import SectionRepository
+from repositories.class_repo import ClassRepository
 from models.student import Student
 
 class StudentService:
