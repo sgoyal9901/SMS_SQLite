@@ -2,6 +2,7 @@ from repositories.student_repo import StudentRepository
 from repositories.section_repo import SectionRepository
 from repositories.class_repo import ClassRepository
 from models.student import Student
+import utils.validators as val
 
 class StudentService:
     def __init__(self):
@@ -10,16 +11,10 @@ class StudentService:
         self.class_repository = ClassRepository()
 
     def validate_student_data(self, name, father_name, section_id, contact_number):
-        if not name.strip():
-            raise ValueError("Student name cannot be empty.")
-        if not father_name.strip():
-            raise ValueError("Father name cannot be empty.")
-        if not section_id:
-            raise ValueError("Section_id cannot be empty.")
-        if not contact_number.strip():
-            raise ValueError("Contact number cannot be empty.")
-        if not contact_number.isdigit() or len(contact_number) != 10:
-            raise ValueError("Contact number must be a 10-digit number.")
+        val.val_student_name(name)
+        val.val_father_name(father_name)
+        val.val_section_id(section_id)
+        val.val_contact_number(contact_number)
         
     def generate_roll_number(self, section_id):
         repo = self.repository
@@ -59,10 +54,7 @@ class StudentService:
         return all_students
     
     def get_student_by_id(self, student_id):
-        if not student_id:
-            raise ValueError("Student ID is required.")
-        if not student_id.isdigit():
-            raise ValueError("Student ID must be a number.")
+        val.val_student_id(student_id)
         repo = self.repository
         student = repo.get_student_by_id(student_id)
         if not student:
@@ -71,10 +63,7 @@ class StudentService:
         return student
     
     def get_students_by_contact_number(self, contact_number):
-        if not contact_number.strip():
-            raise ValueError("Contact number cannot be empty.")
-        if not contact_number.isdigit() or len(contact_number) != 10:
-            raise ValueError("Contact number must be a 10-digit number.")
+        val.val_contact_number(contact_number)
         repo = self.repository
         students = repo.get_students_by_contact_number(contact_number)
         all_students = []
@@ -86,41 +75,29 @@ class StudentService:
         return all_students
     
     def delete_student(self, student_id):
-        if not student_id:
-            raise ValueError("Student ID is required.")
-        if not student_id.isdigit():
-            raise ValueError("Student ID must be a number.")
+        val.val_student_id(student_id)
         repo = self.repository
         repo.delete_student(student_id)
     
     def update_student(self, student_id, name=None, father_name=None,\
                         section_id=None, contact_number=None):
-        if not student_id:
-            raise ValueError("Student ID is required.")
-        if not student_id.isdigit():
-            raise ValueError("Student ID must be a number.")
+        val.val_student_id(student_id)
         repo = self.repository
         student = repo.get_student_by_id(student_id)
         if not student:
             raise ValueError(f"No student found by ID: {student_id}")
         old_section_id = student.section_id
         if name is not None:
-            if not name.strip():
-                raise ValueError("Student name cannot be empty.")
+            val.val_student_name(name)
             student.name = name
         if father_name is not None:
-            if not father_name.strip():
-                raise ValueError("Father name cannot be empty.")
+            val.val_father_name(father_name)
             student.father_name = father_name
         if section_id is not None:
-            if not section_id:
-                raise ValueError("Section_id cannot be empty.")
+            val.val_section_id(section_id)
             student.section_id = section_id
         if contact_number is not None:
-            if not contact_number.strip():
-                raise ValueError("Contact number cannot be empty.")
-            if not contact_number.isdigit() or len(contact_number) != 10:
-                raise ValueError("Contact number must be a 10-digit number.")
+            val.val_contact_number(contact_number)
             student.contact_number = contact_number
         if (section_id is not None and section_id != old_section_id):
             student.roll_number = self.generate_roll_number(section_id)

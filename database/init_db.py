@@ -61,12 +61,12 @@ def initialize_database():
     cursor.execute('''CREATE TABLE IF NOT EXISTS result (
                         result_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         student_id INTEGER NOT NULL,
-                        subject_id INTEGER NOT NULL,
+                        class_subject_id INTEGER NOT NULL,
                         exam_id INTEGER NOT NULL,
                         marks INTEGER NOT NULL,
-                        UNIQUE (student_id, subject_id, exam_id),
+                        UNIQUE (student_id, class_subject_id, exam_id),
                         FOREIGN KEY (student_id) REFERENCES students(student_id),
-                        FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
+                        FOREIGN KEY (class_subject_id) REFERENCES class_subjects(class_subject_id),
                         FOREIGN KEY (exam_id) REFERENCES exams(exam_id)
                     )''')
     conn.commit()

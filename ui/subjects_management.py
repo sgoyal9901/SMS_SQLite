@@ -1,5 +1,5 @@
 from services.subjects_service import SubjectsService
-from services.class_subject_services import ClassSubjectsService
+from services.class_subject_service import ClassSubjectsService
 from ui.school_structure_menu import select_classes
 from models.subjects import Subjects
 

@@ -1,6 +1,7 @@
 from repositories.attendance_repo import AttendanceRepository
 from repositories.student_repo import StudentRepository
 from models.attendance import Attendance
+import utils.validators as val
 
 class AttendanceService:
     def __init__(self):
@@ -16,15 +17,7 @@ class AttendanceService:
     
     
     def validate_date(self, date):
-        from datetime import datetime
-        #if date > datetime.now().strftime('%Y-%m-%d'):
-         #   raise ValueError("Date cannot be in the future.")
-        try:
-            datetime.strptime(date, '%Y-%m-%d')
-        except ValueError:
-            raise ValueError("Invalid date format. Date must be in YYYY-MM-DD format.")
-        if date > datetime.now().strftime('%Y-%m-%d'):
-            raise ValueError("Date cannot be in the future.")
+        val.validate_date(date)
 
     def mark_attendance(self, student_id, date, status):
         self.validate_attendance(status)
