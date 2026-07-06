@@ -3,12 +3,15 @@ import utils.validators as val
 
 class ResultService:
     def __init__(self):
-        self.repo = ResultRepository
+        self.repo = ResultRepository()
 
     def add_result(self, result):
         repo = self.repo
         val.val_marks(result.marks)
-        exiting_result = repo.get_result_by_student_id(result.student_id)
+        val.val_student_id(result.student_id)
+        val.val_class_subject_id(result.class_subject_id)
+        val.val_exam_id(result.exam_id)
+        exiting_result = repo.check_existing_result(result.student_id, result.class_subject_id, result.exam_id)
         if exiting_result:
             raise ValueError(f"Result already exists for this student.")
         result_id = repo.add_result(result)
@@ -29,6 +32,7 @@ class ResultService:
         repo = self.repo
         result = repo.get_result_by_exam_id(exam_id)
         return result
+     
     
     def update_result_by_id(self, result_id, marks):
         val.val_marks(marks)

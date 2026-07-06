@@ -53,7 +53,19 @@ class ResultRepository:
         results = [self.row_to_result(row) for row in rows]
         return results
     
+    def check_existing_result(self, student_id, class_subject_id, exam_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM results WHERE student_id = ? AND class_subject_id = ? \
+                       AND exam_id = ?', (student_id, class_subject_id, exam_id))
+        row = cursor.fetchone()
+        if row:
+            return True
+        return False
+
+
     def update_result_by_id(self, result_id, marks):
+        
         conn = self.connection
         cursor = conn.cursor()
         cursor.execute('UPDATE results SET marks = ? WHERE result_id = ?', (marks, result_id))

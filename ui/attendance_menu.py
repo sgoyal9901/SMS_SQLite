@@ -62,7 +62,7 @@ def attendance_menu():
                 date = str(date.today())
             else:    
                 try:
-                    val.validate_date(date)
+                    val.val_date(date)
                 except ValueError as e:
                     print(f"Error: {e}")
                     continue

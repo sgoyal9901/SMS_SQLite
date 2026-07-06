@@ -30,7 +30,7 @@ class AttendanceService:
             (student_id, date)
     
     def get_attendance_by_section_and_date(self, section_id, date):
-        val.validate_date(date)
+        val.val_date(date)
         return self.attendance_repository.get_attendance_by_section_and_date\
             (section_id, date)
     

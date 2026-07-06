@@ -27,7 +27,7 @@ def val_section_id(section_id):
         raise ValueError("Section_id cannot be empty.")
     
 
-def validate_date(date):
+def val_date(date):
         from datetime import datetime
         try:
             datetime.strptime(date, '%Y-%m-%d')
@@ -37,8 +37,22 @@ def validate_date(date):
             raise ValueError("Date cannot be in the future.")
         
 
+def val_class_subject_id (class_subject_id):
+    if not class_subject_id.strip():
+        raise ValueError("Class_subject_id cannot be empty.")
+    
+
+def val_exam_id(exam_id):
+    if not exam_id.strip():
+        raise ValueError("Exam_id cannot be empty.")
+        
+
 def val_marks(marks):
     if not marks.strip():
         raise ValueError("Marks cannot be empty.")
     if not marks.isdigit():
         raise ValueError("Marks must be a number.")
+    if int(marks) < 0:
+        raise ValueError("Marks cannot be negative.")
+    if not 0 <= int(marks) <= 100:
+        raise ValueError("Marks must be between 0 and 100.")
