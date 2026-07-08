@@ -29,6 +29,8 @@ def val_contact_number(contact_number):
 def val_section_id(section_id):
     if not section_id:
         raise ValueError("Section_id cannot be empty.")
+    if not isinstance(section_id, int):
+        raise ValueError("Section_id must be an integer.")
     
 
 def val_date(date):
@@ -42,19 +44,23 @@ def val_date(date):
         
 
 def val_class_subject_id (class_subject_id):
-    if not class_subject_id.strip():
+    if not class_subject_id:
         raise ValueError("Class_subject_id cannot be empty.")
+    if not isinstance(class_subject_id, int):
+        raise ValueError("Class_subject_id must be an integer.")
     
 
 def val_exam_id(exam_id):
-    if not exam_id.strip():
+    if not exam_id:
         raise ValueError("Exam_id cannot be empty.")
+    if not isinstance(exam_id, int):
+        raise ValueError("Exam_id must be an integer.")
         
 
 def val_marks(marks):
     if not isinstance(marks, int):
         raise ValueError("Marks must be an integer.")
-    if not marks:
+    if marks is None:
         raise ValueError("Marks cannot be empty.")
     if marks < 0 or marks > 100:
         raise ValueError("Marks must be between 0 and 100.")

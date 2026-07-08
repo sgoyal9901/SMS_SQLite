@@ -2,7 +2,7 @@ from repositories.exams_repo import ExamsRepository
 
 class ExamsService:
     def __init__(self):
-        self.repo = ExamsRepository
+        self.repo = ExamsRepository()
 
     def add_exams(self, exam_name):
         repo = self.repo

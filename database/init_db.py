@@ -58,7 +58,7 @@ def initialize_database():
                         UNIQUE (exam_name)
                     )''')
     
-    cursor.execute('''CREATE TABLE IF NOT EXISTS result (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS results (
                         result_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         student_id INTEGER NOT NULL,
                         class_subject_id INTEGER NOT NULL,
