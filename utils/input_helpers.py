@@ -4,6 +4,16 @@ from services.section_service import SectionService
 class_service = ClassService()
 section_service = SectionService()
 
+def input_student_id():
+    while True:
+        student_id = input()
+        if not student_id.strip():
+            print("Student ID cannot be empty.")
+        if not student_id.isdigit():
+            print("Student ID must be a number.")
+        else:
+            return int(student_id)
+
 def select_class():
     classes = class_service.get_all_classes()
     if not classes:
@@ -31,3 +41,10 @@ def select_section(class_id):
     except:
         raise ValueError("Invalid section choice.") 
 
+def val_marks_ui(marks):
+    if not marks.strip():
+        raise ValueError("Marks cannot be empty.")
+    if not marks.isdigit():
+        raise ValueError("Marks must be a number.")
+    if int(marks) < 0 or int(marks) > 100:
+        raise ValueError("Marks must be between 0 and 100.")

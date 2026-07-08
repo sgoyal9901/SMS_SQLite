@@ -1,18 +1,22 @@
 def val_student_name(student_name):
     if not student_name.strip():
         raise ValueError("Student name cannot be empty.")
-    if not student_name.isalpha():
-        raise ValueError("Student name must contain only alphabetic characters.")
+    if not student_name.replace(' ', '').isalpha():
+        raise ValueError("Student name must contain only letters.")
     
 def val_student_id(student_id):
-    if not student_id.strip():
+    if not isinstance(student_id, int):
+        raise ValueError("Student ID must be an integer.")
+    if not student_id:
         raise ValueError("Student ID cannot be empty.")
-    if not student_id.isdigit():
-        raise ValueError("Student ID must be a number.")
+    if student_id < 0:
+        raise ValueError("Student ID cannot be negative.")
 
 def val_father_name(father_name):
     if not father_name.strip():
         raise ValueError("Father name cannot be empty.")
+    if not father_name.replace(' ', '').isalpha():
+        raise ValueError("Father name must contain only letters.")
     
 
 def val_contact_number(contact_number):
@@ -48,11 +52,10 @@ def val_exam_id(exam_id):
         
 
 def val_marks(marks):
-    if not marks.strip():
+    if not isinstance(marks, int):
+        raise ValueError("Marks must be an integer.")
+    if not marks:
         raise ValueError("Marks cannot be empty.")
-    if not marks.isdigit():
-        raise ValueError("Marks must be a number.")
-    if int(marks) < 0:
-        raise ValueError("Marks cannot be negative.")
-    if not 0 <= int(marks) <= 100:
+    if marks < 0 or marks > 100:
         raise ValueError("Marks must be between 0 and 100.")
+    

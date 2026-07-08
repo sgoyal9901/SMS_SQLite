@@ -22,9 +22,15 @@ def student_menu():
         choice = input()
         if choice == '1':
             print("Enter student name: ")
-            name = input().title()
+            name = input().strip().title()
+            if not name:
+                print("Student name cannot be empty.")
+                continue
             print("Enter father name: ")
-            father_name = input().title()
+            father_name = input().strip().title()
+            if not father_name:
+                print("Father name cannot be empty.")
+                continue
             print("Choose class: ")
             try:
                 class_id = help.select_class()
@@ -47,9 +53,9 @@ def student_menu():
                 print(f"Error: {e}")
 
         elif choice == '2':
-            print("Enter student ID: ")
-            student_id = input()
+            print("Enter student ID to see details: ")
             try:
+                student_id = help.input_student_id()
                 student = student_service.get_student_by_id(student_id)
                 if student:
                     print(student)
@@ -73,8 +79,8 @@ def student_menu():
 
         elif choice == '4':
             print("Enter student ID to update: ")
-            student_id = input()
             try :
+                student_id = help.input_student_id()
                 student = student_service.get_student_by_id(student_id)
                 if not student:
                     print("Student not found.")
@@ -125,8 +131,8 @@ def student_menu():
 
         elif choice == '5':
             print("Enter student ID to delete: ")
-            student_id = input()
             try:
+                student_id = help.input_student_id()
                 student = student_service.get_student_by_id(student_id)
                 if not student:
                     print("Student not found.")
