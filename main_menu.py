@@ -3,6 +3,8 @@ from ui.student_menu import student_menu
 from ui.school_structure_menu import school_structure
 from ui.attendance_menu import attendance_menu
 from ui.subjects_management import subjects_menu
+from ui.exams_menu import exams_menu
+from ui.result_menu import result_menu
 
 initialize_database()
 
@@ -13,9 +15,11 @@ while True:
 2. School Structure
 3. Attendance Menu
 4. Subject Menu
-5. Exit
+5. Exams
+6. Results
+7. Exit
     ''')
-    print("Enter your choice (1-5): ")
+    print("Enter your choice (1-7): ")
     choice = input()
     if choice == '1':
         student_menu()
@@ -30,6 +34,12 @@ while True:
         subjects_menu()
 
     elif choice == '5':
+        exams_menu()
+
+    elif choice == '6':
+        result_menu()
+        
+    elif choice == '7':
         print("Confirm exit? (Y/N): ")
         confirm = input().upper()
         if confirm == 'Y':

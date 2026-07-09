@@ -11,11 +11,7 @@ class ResultRepository:
             student_id = row[1],
             class_subject_id= row[2],
             exam_id = row[3],
-            marks = row[4],
-            name = row[5],
-            roll_number = row[6],
-            class_name = row[7],
-            section_name = row[8]
+            marks = row[4]
             )
 
     def add_result(self, result):
@@ -60,8 +56,9 @@ class ResultRepository:
                        AND exam_id = ?', (student_id, class_subject_id, exam_id))
         row = cursor.fetchone()
         if row:
-            return True
-        return False
+            result = self.row_to_result(row)
+            return result
+        return None
 
 
     def update_result_by_id(self, result_id, marks):
@@ -78,3 +75,14 @@ class ResultRepository:
         cursor.execute('DELETE FROM results WHERE result_id = ?', (result_id,))
         conn.commit()
         return
+    
+    def get_result_id_by_data(self, student_id, class_subject_id, exam_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT result_id FROM results WHERE student_id = ? AND class_subject_id = ? \
+                       AND exam_id = ?', (student_id, class_subject_id, exam_id))
+        row = cursor.fetchone()
+        if row:
+            result_id = row[0]
+            return result_id
+        return None

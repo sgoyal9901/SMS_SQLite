@@ -13,9 +13,10 @@ def school_structure():
     2. View Class
     3. Add Section
     4. View Section
-    5. Delete Class
-    6. Delete Section
-    7. Back
+    5. View All classes
+    6. Delete Class
+    7. Delete Section
+    8. Back
             ''')
         print("Enter your choice (1-7): ")
         choice = input()
@@ -64,6 +65,19 @@ def school_structure():
                 print("No sections found.")
 
         elif choice == '5':
+            classes = class_service.get_all_classes()
+            if classes:
+                for class_ in classes:
+                    sections = section_service.get_sections_by_class(class_.class_id)
+                    if sections:
+                        for section in sections:
+                            print(f"Class: {class_.class_name} {section.section_name}")
+                    else:
+                        print(f"Class: {class_.class_name} (no sections)")
+            else:
+                print("No classes found.")
+
+        elif choice == '6':
             try:
                 class_id = help.select_class()
             except ValueError as e:
@@ -83,7 +97,7 @@ def school_structure():
             else:
                 print("Deletion cancelled.")
 
-        elif choice == '6':
+        elif choice == '7':
             try:
                 class_id = help.select_class()
             except ValueError as e:
@@ -105,5 +119,5 @@ def school_structure():
             else:
                 print("Deletion cancelled.")
 
-        elif choice == '7':
+        elif choice == '8':
             break

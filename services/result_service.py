@@ -44,3 +44,13 @@ class ResultService:
         repo = self.repo
         repo.delete_result_by_id(result_id)
         return
+    
+    def check_existing_result(self, student_id, class_subject_id, exam_id):
+        repo = self.repo
+        result = repo.check_existing_result(student_id, class_subject_id, exam_id)
+        return result
+    
+    def get_result_id_by_data(self, student_id, class_subject_id, exam_id):
+        repo = self.repo
+        result_id = repo.get_result_id_by_data(student_id, class_subject_id, exam_id)
+        return result_id
