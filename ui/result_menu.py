@@ -116,6 +116,7 @@ def result_menu():
                         choice = input()
                         if choice.upper() == 'Y':
                             result_service.delete_result_by_id(result.result_id)
+                            print("Result deleted successfully.")
                             continue
                         else:
                             continue
