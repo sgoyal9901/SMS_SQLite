@@ -26,8 +26,8 @@ def result_menu():
             for student in students:
                 print(f"Roll Number: {student.roll_number} | Name: {student.name}")
                 try:
-                    check_existing = result_service.check_existing_result(student.roll_number,\
-                                                                           class_subject_id, exam_id)
+                    check_existing = result_service.\
+                        check_existing_result(student.student_id, class_subject_id, exam_id)
                     if check_existing:
                         result = check_existing
                         print(result.marks)
