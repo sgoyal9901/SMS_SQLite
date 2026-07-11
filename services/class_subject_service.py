@@ -20,3 +20,4 @@ class ClassSubjectsService:
 
     def subject_exist_in_class(self, class_id, subject_id):
         return self.class_subject_repository.subject_exist_in_class(class_id, subject_id)
+    

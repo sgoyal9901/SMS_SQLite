@@ -17,23 +17,6 @@ class ResultService:
         result_id = repo.add_result(result)
         return result_id
     
-    def get_result_by_student_id (self, student_id):
-        val.val_student_id(student_id)
-        repo = self.repo
-        result = repo.get_result_by_student_id(student_id)
-        return result
-
-    def get_result_by_class_subject_id(self, class_subject_id):
-        repo = self.repo
-        result = repo.get_result_by_class_subject_id(class_subject_id)
-        return result
-    
-    def get_result_by_exam_id(self, exam_id):
-        repo = self.repo
-        result = repo.get_result_by_exam_id(exam_id)
-        return result
-     
-    
     def update_result_by_id(self, result_id, marks):
         val.val_marks(marks)
         repo = self.repo

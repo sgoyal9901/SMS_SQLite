@@ -112,3 +112,15 @@ def select_all_for_result():
             print(f"Error: {e}")
             continue
         return students, class_subject_id, exam_id
+
+def input_marks():
+    while True:
+        marks = input()
+        if not marks.strip():
+            print("Marks cannot be empty.")
+        if not marks.lstrip('-').isdigit():
+            print("Marks must be a number.")
+        if int(marks) < 0 or int(marks) > 100:
+            print("Marks must be between 0 and 100.")
+        else:
+            return int(marks)    

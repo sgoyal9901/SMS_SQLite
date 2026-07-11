@@ -2,7 +2,6 @@ from services.result_service import ResultService
 from services.student_service import StudentService
 from models.result import Result
 import utils.input_helpers as help
-import utils.input_validators as inval
 
 
 result_service = ResultService()
@@ -36,13 +35,7 @@ def result_menu():
                     print(f"Error: {e}")
                     continue
                 print("Enter marks: ")
-                marks = input()
-                try:
-                    marks = inval.val_marks(marks)
-                    marks = int(marks)
-                except ValueError as e:
-                    print(f"Error: {e}")
-                    continue
+                marks = help.input_marks()
                 try:
                     result_service.\
                         add_result(result=Result(
@@ -87,13 +80,7 @@ def result_menu():
                         print(f"Roll Number: {student.roll_number} | Name: {student.name}")
                         print(result.marks)
                         print("Enter new marks: ")
-                        marks = input()
-                        try:
-                            marks = inval.val_marks(marks)
-                            marks = int(marks)
-                        except ValueError as e:
-                            print(f"Error: {e}")
-                            continue
+                        marks = help.input_marks()
                         result_service.update_result_by_id(result.result_id, marks)
                         continue
                     else:

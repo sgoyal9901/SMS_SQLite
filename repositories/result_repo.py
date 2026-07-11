@@ -25,30 +25,6 @@ class ResultRepository:
         result_id = cursor.lastrowid
         return result_id
     
-    def get_result_by_student_id(self, student_id):
-        conn = self.connection
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM results WHERE student_id = ?', (student_id,))
-        rows = cursor.fetchall()
-        results = [self.row_to_result(row) for row in rows]
-        return results
-    
-    def get_result_by_class_subject_id (self, class_subject_id):
-        conn = self.connection
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM results WHERE class_subject_id = ?', (class_subject_id,))
-        rows = cursor.fetchall()
-        results = [self.row_to_result(row) for row in rows]
-        return results
-    
-    def get_result_by_exam_id(self, exam_id):
-        conn = self.connection
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM results WHERE exam_id = ?', (exam_id,))
-        rows = cursor.fetchall()
-        results = [self.row_to_result(row) for row in rows]
-        return results
-    
     def check_existing_result(self, student_id, class_subject_id, exam_id):
         conn = self.connection
         cursor = conn.cursor()
@@ -60,9 +36,7 @@ class ResultRepository:
             return result
         return None
 
-
     def update_result_by_id(self, result_id, marks):
-        
         conn = self.connection
         cursor = conn.cursor()
         cursor.execute('UPDATE results SET marks = ? WHERE result_id = ?', (marks, result_id))
@@ -86,3 +60,11 @@ class ResultRepository:
             result_id = row[0]
             return result_id
         return None
+    
+    def get_result_of_student(self, student_id, exam_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM results WHERE student_id = ? AND exam_id = ?', (student_id, exam_id))
+        rows = cursor.fetchall()
+        results = [self.row_to_result(row) for row in rows]
+        return results

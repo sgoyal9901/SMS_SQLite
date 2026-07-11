@@ -65,3 +65,13 @@ class ClassSubjectsRepository:
         if row:
             return True
         return False
+    
+    def get_class_subject_by_id(self, class_subject_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM class_subjects WHERE class_subject_id = ?', (class_subject_id,))
+        row = cursor.fetchone()
+        if row:
+            class_subject = self.row_to_class_subject(row)
+            return class_subject
+        return None 

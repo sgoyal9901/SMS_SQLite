@@ -5,6 +5,7 @@ from ui.attendance_menu import attendance_menu
 from ui.subjects_management import subjects_menu
 from ui.exams_menu import exams_menu
 from ui.result_menu import result_menu
+from ui.report_card_menu import report_card_menu
 
 initialize_database()
 
@@ -17,7 +18,8 @@ while True:
 4. Subject Menu
 5. Exams
 6. Results
-7. Exit
+7. Result card
+8. Exit
     ''')
     print("Enter your choice (1-7): ")
     choice = input()
@@ -40,6 +42,9 @@ while True:
         result_menu()
         
     elif choice == '7':
+        report_card_menu()
+
+    elif choice == '8':
         print("Confirm exit? (Y/N): ")
         confirm = input().upper()
         if confirm == 'Y':
