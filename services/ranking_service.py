@@ -18,7 +18,7 @@ class RankingService:
             try:
                 report_card = self.report_card_service.generate_report_card(student.student_id, exam_id)
                 report_cards.append(report_card)
-            except:
+            except ValueError:
                 continue
         rankings = sorted(report_cards, key=lambda x: x.percentage, reverse=True)
         return rankings

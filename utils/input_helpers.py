@@ -15,8 +15,10 @@ def input_student_id():
         student_id = input()
         if not student_id.strip():
             print("Student ID cannot be empty.")
+            continue
         if not student_id.isdigit():
             print("Student ID must be a number.")
+            continue
         else:
             return int(student_id)
 

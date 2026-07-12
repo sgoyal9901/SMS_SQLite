@@ -77,7 +77,8 @@ Grade: {report_card.grade}
                 rankings = ranking_service.get_ranking(class_id, exam_id)
                 for rank, report_card in enumerate(rankings, start=1):
                     print(f"{rank}. {report_card.name} ({report_card.class_name} {report_card.section_name}): {report_card.percentage}")
-            except ValueError:
+            except ValueError as e:
+                print(f"Error: {e}")
                 continue
 
         elif choice == '3':
