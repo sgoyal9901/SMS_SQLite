@@ -18,10 +18,10 @@ while True:
 4. Subject Menu
 5. Exams
 6. Results
-7. Result card
+7. Report card
 8. Exit
     ''')
-    print("Enter your choice (1-7): ")
+    print("Enter your choice (1-8): ")
     choice = input()
     if choice == '1':
         student_menu()
@@ -50,4 +50,7 @@ while True:
         if confirm == 'Y':
             break
         else:
-            continue
+            continue 
+
+    else:
+        print("Invalid choice. Please try again.")

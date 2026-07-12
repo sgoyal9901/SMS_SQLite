@@ -58,10 +58,10 @@ def val_exam_id(exam_id):
         
 
 def val_marks(marks):
+    if marks is None:
+        raise ValueError("Marks is empty.")
     if not isinstance(marks, int):
         raise ValueError("Marks must be an integer.")
-    if marks is None:
-        raise ValueError("Marks cannot be empty.")
     if marks < 0 or marks > 100:
         raise ValueError("Marks must be between 0 and 100.")
     

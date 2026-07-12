@@ -117,10 +117,13 @@ def input_marks():
     while True:
         marks = input()
         if not marks.strip():
-            print("Marks cannot be empty.")
+            print("Skipped.")
+            break
         if not marks.lstrip('-').isdigit():
             print("Marks must be a number.")
+            continue
         if int(marks) < 0 or int(marks) > 100:
             print("Marks must be between 0 and 100.")
+            continue
         else:
             return int(marks)    

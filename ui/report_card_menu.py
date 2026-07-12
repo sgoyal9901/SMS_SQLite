@@ -36,15 +36,23 @@ Roll Number: {student.roll_number}
                 print(f"Error: {e}")
                 continue
             try:
-                results, obtained_marks, total_marks, percentage = \
-                    report_card_service.get_report_card(student_id, exam_id)
-                for result in results:
-                    print(f"Subject: {result.subject_name} | Marks: {result.marks}/100")
+                report_card = report_card_service.generate_report_card(student_id, exam_id)
                 print(f'''
-Obtained Marks: {obtained_marks}
-Total Marks: {total_marks}
-Percentage: {percentage}%
-                    ''')
+Name: {report_card.name}
+Class: {report_card.class_name} {report_card.section_name}
+Roll Number: {report_card.roll_number}
+Exam: {report_card.exam_name}
+                      ''')
+                for subject, marks in report_card.subject_results:
+                    print(f"{subject}: {marks}")
+                print(f'''
+Obtained Marks: {report_card.obtained_marks}
+Total Marks: {report_card.total_marks}
+Percentage: {report_card.percentage}
+Grade: {report_card.grade}
+                      ''')
             except ValueError as e:
                 print(f"Error: {e}")
-                continue
+
+        elif choice == '2':
+            break
