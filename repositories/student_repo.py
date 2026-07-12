@@ -140,3 +140,16 @@ class StudentRepository:
             student = self.row_to_student(row)
             students.append(student)
         return students
+    
+    def get_students_by_class_id(self, class_id):
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM students JOIN sections \
+                       ON students.section_id = sections.section_id \
+                       WHERE sections.class_id = ?', (class_id,))
+        rows = cursor.fetchall()
+        students = []
+        for row in rows:
+            student = self.row_to_student(row)
+            students.append(student)
+        return students

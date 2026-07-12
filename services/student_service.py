@@ -118,3 +118,4 @@ class StudentService:
         repo = self.repository
         students = repo.get_student_by_section(section_id)
         return students
+    
