@@ -15,8 +15,11 @@ class RankingService:
             raise ValueError("No students found in the class")
         report_cards = []
         for student in students:
-            report_card = self.report_card_service.generate_report_card(student.student_id, exam_id)
-            report_cards.append(report_card)
-        rankings = report_cards.sort(key=lambda x: x.percentage, reverse=True)
+            try:
+                report_card = self.report_card_service.generate_report_card(student.student_id, exam_id)
+                report_cards.append(report_card)
+            except:
+                continue
+        rankings = sorted(report_cards, key=lambda x: x.percentage, reverse=True)
         return rankings
         
