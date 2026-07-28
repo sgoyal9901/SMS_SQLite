@@ -1,9 +1,7 @@
-from database.init_db import initialize_database
 from services.student_service import StudentService
 from schemas.student import StudentCreate
 from fastapi import FastAPI
 
-initialize_database()
 app = FastAPI()
 student_service = StudentService()
 
