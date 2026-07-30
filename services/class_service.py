@@ -32,3 +32,9 @@ class ClassService:
         for section in sections:
             self.section_repository.delete_section(section.section_id)
         self.class_repository.delete_class(class_id)
+
+    def get_classes_with_sections(self):
+        classes = self.class_repository.get_all_classes()
+        for class_ in classes:
+            class_.sections = self.section_repository.get_sections_by_class(class_.class_id)
+        return classes

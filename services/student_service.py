@@ -108,10 +108,10 @@ class StudentService:
     def get_student_details(self, student_id):
         repo = self.repository
         student = repo.get_student_by_id(student_id)
-        section = self.section_repository.get_section_by_id(student.section_id)
-        student.section_name = section.section_name
-        class_ = self.class_repository.get_class_by_id(section.class_id)
-        student.class_name = class_.class_name
+        section = self.section_repository.get_section_by_id(student.section_id) # type: ignore
+        student.section_name = section.section_name # type: ignore
+        class_ = self.class_repository.get_class_by_id(section.class_id) # type: ignore
+        student.class_name = class_.class_name # type: ignore
         return student
     
     def get_student_by_section(self, section_id):
