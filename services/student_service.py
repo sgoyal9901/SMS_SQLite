@@ -3,6 +3,7 @@ from repositories.section_repo import SectionRepository
 from repositories.class_repo import ClassRepository
 from models.student import Student
 import utils.validators as val
+import exception.student as student_er
 
 class StudentService:
     def __init__(self):
@@ -30,7 +31,7 @@ class StudentService:
         repo = self.repository
         self.validate_student_data(name, father_name, section_id, contact_number)
         if self.check_duplicate_student(name, father_name, contact_number):
-            raise ValueError("A student with the same name, father name, and contact number already exists.")
+            raise student_er.StudentAlreadyExistsError("A student with the same name, father name, and contact number already exists.")
         roll_number = self.generate_roll_number(section_id)
         new_student = Student(
             name=name,
@@ -47,6 +48,8 @@ class StudentService:
     def get_all_students(self):
         repo = self.repository
         students = repo.get_all_students()
+        if not students:
+            raise student_er.StudentNotFoundError("No students found")
         all_students = []
         for student in students:
             student = self.get_student_details(student.student_id)
@@ -58,7 +61,7 @@ class StudentService:
         repo = self.repository
         student = repo.get_student_by_id(student_id)
         if not student:
-            raise ValueError(f"No student found by ID: {student_id}")
+            raise student_er.StudentNotFoundError(f"No student found by ID: {student_id}")
         student = self.get_student_details(student_id)
         return student
     
@@ -66,9 +69,9 @@ class StudentService:
         val.val_contact_number(contact_number)
         repo = self.repository
         students = repo.get_students_by_contact_number(contact_number)
-        all_students = []
         if not students:
-            raise ValueError(f"No student found by contact number: {contact_number}")
+            raise student_er.StudentNotFoundError(f"No student found by contact number: {contact_number}")
+        all_students = []
         for student in students:
             student = self.get_student_details(student.student_id)
             all_students.append(student)
@@ -85,7 +88,7 @@ class StudentService:
         repo = self.repository
         student = repo.get_student_by_id(student_id)
         if not student:
-            raise ValueError(f"No student found by ID: {student_id}")
+            raise student_er.StudentNotFoundError(f"No student found by ID: {student_id}")
         old_section_id = student.section_id
         if name is not None:
             val.val_student_name(name)
@@ -117,5 +120,6 @@ class StudentService:
     def get_student_by_section(self, section_id):
         repo = self.repository
         students = repo.get_student_by_section(section_id)
+        if not students:
+            raise student_er.StudentNotFoundError(f"No student found in this section.")
         return students
-    

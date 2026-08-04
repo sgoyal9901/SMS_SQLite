@@ -7,3 +7,6 @@ class ClassResponse(BaseModel):
 class ClassWithSectionsResponse(BaseModel):
     class_name: str
     sections: list[SectionResponse]
+
+class ClassCreate(BaseModel):
+    class_name: str

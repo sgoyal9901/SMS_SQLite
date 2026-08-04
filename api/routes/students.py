@@ -1,7 +1,6 @@
 from services.student_service import StudentService
 from api.schemas.student import StudentCreate , StudentResponse
-from fastapi import APIRouter
-from fastapi import HTTPException
+from fastapi import APIRouter, status
 
 router = APIRouter(
     prefix="/students",
@@ -9,44 +8,30 @@ router = APIRouter(
 )
 student_service = StudentService()
 
-@router.post("/add_student", response_model=StudentResponse)
+@router.post("", response_model=StudentResponse, status_code=status.HTTP_201_CREATED)
 def add_student(student: StudentCreate):
-    try:
-        return student_service.add_student(student.name, student.father_name, student.section_id, \
-                                           student.contact_number)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return student_service.add_student(student.name, student.father_name, student.section_id, \
+                                        student.contact_number)
 
-@router.get("/all_students", response_model=list[StudentResponse])
+@router.get("", response_model=list[StudentResponse], status_code=status.HTTP_200_OK)
 def get_all_students():
-    return student_service.get_all_students()
+    student_service.get_all_students()
 
-@router.get("/student/{student_id}", response_model=StudentResponse)
+@router.get("/{student_id}", response_model=StudentResponse, status_code=status.HTTP_200_OK)
 def get_student_by_id(student_id: int):
-    try:
-        return student_service.get_student_by_id(student_id)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return student_service.get_student_by_id(student_id)
 
-@router.get("/student/{contact_number}", response_model=list[StudentResponse])
-def get_student_by_contact_number(contact_number: str):    
-    try:
-        return student_service.get_students_by_contact_number(contact_number)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+@router.get("/{contact_number}", response_model=list[StudentResponse],\
+             status_code=status.HTTP_200_OK)
+def get_student_by_contact_number(contact_number: str):
+    return student_service.get_students_by_contact_number(contact_number)
 
-@router.delete("/delete_student/{student_id}")
+@router.delete("/{student_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_student(student_id: int):
-    try:
-        student_service.delete_student(student_id)
-        return {"message": "Student deleted successfully"}
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    student_service.delete_student(student_id)
+    return {"message": "Student deleted successfully"}
 
-@router.put("/update_student/{student_id}", response_model=StudentResponse)
+@router.put("/{student_id}", response_model=StudentResponse, status_code=status.HTTP_200_OK)
 def update_student(student_id: int, student: StudentCreate):
-    try:
-        return student_service.update_student(student_id, student.name, student.father_name, \
-                                              student.section_id, student.contact_number)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return student_service.update_student(student_id, student.name, student.father_name, \
+                                          student.section_id, student.contact_number)
