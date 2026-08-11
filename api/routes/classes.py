@@ -19,8 +19,8 @@ def get_classes_with_sections():
 
 @router.post("", response_model=ClassResponse)
 def add_class(class_name: ClassCreate):
-    class_service.add_class(class_name)
-    return {"class_name": class_name}
+    class_service.add_class(class_name.class_name)
+    return {"class_name": class_name.class_name}
     
 @router.delete("/{class_id}")
 def delete_class(class_id: int):

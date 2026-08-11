@@ -51,10 +51,10 @@ class StudentRepository:
     def _build_student_filter(self, class_id, section_id, search):
         filters = []
         parameter = []
-        if class_id:
+        if class_id is not None:
             filters.append('classes.class_id = ?')
             parameter.append(class_id)
-        if section_id:
+        if section_id is not None:
             filters.append('sections.section_id = ?')
             parameter.append(section_id)
         if search:
@@ -68,18 +68,18 @@ class StudentRepository:
         with get_connection() as conn:
             cursor = conn.cursor()
             offset = (page - 1)*limit
-            quary = '''
+            query = '''
             SELECT * FROM students
             JOIN sections ON students.section_id = sections.section_id
             JOIN classes ON sections.class_id = classes.class_id
             '''
             filters, parameter = self._build_student_filter(class_id, section_id, search)
             if filters:
-                quary += ' WHERE ' + ' AND '.join(filters)
-            quary += f' ORDER BY {sort} {order.upper()}'
-            quary += ' LIMIT ? OFFSET ?'
+                query += ' WHERE ' + ' AND '.join(filters)
+            query += f' ORDER BY {sort} {order.upper()}'
+            query += ' LIMIT ? OFFSET ?'
             parameter.extend([limit, offset])
-            cursor.execute(quary, parameter)
+            cursor.execute(query, parameter)
             rows = cursor.fetchall()
             students = []
             for row in rows:
@@ -91,15 +91,15 @@ class StudentRepository:
                                search: str|None=None):
         with get_connection() as conn:
             cursor = conn.cursor()
-            quary = '''
+            query = '''
             SELECT COUNT(*) FROM students
             JOIN sections ON students.section_id = sections.section_id
             JOIN classes ON sections.class_id = classes.class_id
             '''
             filters, parameter = self._build_student_filter(class_id, section_id, search)
             if filters:
-                quary += ' WHERE ' + ' AND '.join(filters)
-            cursor.execute(quary, parameter)
+                query += ' WHERE ' + ' AND '.join(filters)
+            cursor.execute(query, parameter)
             count = cursor.fetchone()[0]
             return count
     

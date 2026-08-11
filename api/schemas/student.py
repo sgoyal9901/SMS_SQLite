@@ -21,3 +21,9 @@ class StudentPaginationResponse(BaseModel):
     total: int
     total_pages: int
     data: list[StudentResponse]
+
+class StudentUpdate(BaseModel):
+    name: str | None = None
+    father_name: str | None = None
+    section_id: int | None = None
+    contact_number: str | None = None

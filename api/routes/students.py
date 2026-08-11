@@ -1,5 +1,5 @@
 from services.student_service import StudentService
-from api.schemas.student import StudentCreate , StudentResponse, StudentPaginationResponse
+from api.schemas.student import StudentCreate , StudentResponse, StudentPaginationResponse, StudentUpdate
 from fastapi import APIRouter, status
 
 router = APIRouter(
@@ -33,6 +33,6 @@ def delete_student(student_id: int):
     student_service.delete_student(student_id)
 
 @router.put("/{student_id}", response_model=StudentResponse, status_code=status.HTTP_200_OK)
-def update_student(student_id: int, student: StudentCreate):
+def update_student(student_id: int, student: StudentUpdate):
     return student_service.update_student(student_id, student.name, student.father_name, \
                                           student.section_id, student.contact_number)

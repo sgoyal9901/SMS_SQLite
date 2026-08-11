@@ -1,13 +1,21 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from database.init_db import initialize_database
 from api.routes.students import router as student_router
 from api.routes.classes import router as class_router
 from api.routes.sections import router as section_router
 from api.exception_handlers import register_exception_handlers
 from api.middleware import register_middleware
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize_database()
+    yield
+
 app = FastAPI(
     title="School Management System",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 register_exception_handlers(app)

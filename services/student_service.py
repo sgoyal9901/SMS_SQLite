@@ -67,8 +67,6 @@ class StudentService:
                 raise student_er.StudentNotFoundError("Section not found")
         if search is not None:
             search = search.strip()
-            if not search:
-                pass
         if sort not in ["student_id", "name", "roll_number"]:
             raise student_er.InvalidStudentDataError("Invalid sort parameter")
         if order not in ["asc", "desc"]:
