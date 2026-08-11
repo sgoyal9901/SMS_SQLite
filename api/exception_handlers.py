@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
-import exception.student as student
-import exception.class_ as class_
-import exception.section as section
+import exceptions.student as student
+import exceptions.class_ as class_
+import exceptions.section as section
 
 def register_exception_handlers(app: FastAPI):
     @app.exception_handler(student.StudentNotFoundError)
@@ -12,13 +12,20 @@ def register_exception_handlers(app: FastAPI):
             content={"detail": str(exc)}
         )
 
-    @app.exception_handler(student.StudentAlreadyExistsError)
-    def handle_student_already_exists(request: Request, exc: student.StudentAlreadyExistsError):
+    @app.exception_handler(student.DuplicateStudentError)
+    def handle_student_already_exists(request: Request, exc: student.DuplicateStudentError):
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
             content={"detail": str(exc)}
         )
 
+    @app.exception_handler(student.InvalidStudentDataError)
+    def handle_invalid_student_data(request: Request, exc: student.InvalidStudentDataError):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": str(exc)}
+        )
+    
     @app.exception_handler(ValueError)
     def handle_value_error(request: Request, exc: ValueError):
         return JSONResponse(
@@ -33,8 +40,8 @@ def register_exception_handlers(app: FastAPI):
             content={"detail": str(exc)}
         )
 
-    @app.exception_handler(class_.ClassAlreadyExistsError)
-    def handle_class_already_exists(request: Request, exc: class_.ClassAlreadyExistsError):
+    @app.exception_handler(class_.DuplicateClassError)
+    def handle_class_already_exists(request: Request, exc: class_.DuplicateClassError):
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
             content={"detail": str(exc)}
@@ -61,8 +68,8 @@ def register_exception_handlers(app: FastAPI):
             content={"detail": str(exc)}
         )
 
-    @app.exception_handler(section.SectionAlreadyExistsError)
-    def handle_section_already_exists(request: Request, exc: section.SectionAlreadyExistsError):
+    @app.exception_handler(section.DuplicateSectionError)
+    def handle_section_already_exists(request: Request, exc: section.DuplicateSectionError):
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
             content={"detail": str(exc)}

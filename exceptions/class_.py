@@ -5,7 +5,7 @@ class ClassError(Exception):
 class ClassNotFoundError(ClassError):
     pass
 
-class ClassAlreadyExistsError(ClassError):
+class DuplicateClassError(ClassError):
     pass
 
 class InvalidClassDataError(ClassError):

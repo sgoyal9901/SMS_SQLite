@@ -2,7 +2,8 @@ from repositories.class_repo import ClassRepository
 from repositories.student_repo import StudentRepository
 from repositories.section_repo import SectionRepository
 from models.school_class import SchoolClass
-import exception.class_ as class_er
+import exceptions.class_ as class_er
+import exceptions.section as section_er
 
 class ClassService:
     def __init__(self):
@@ -14,7 +15,7 @@ class ClassService:
         if not class_name.strip():
             raise class_er.InvalidClassDataError("Class name cannot be empty")
         if self.class_repository.get_class_by_name(class_name):
-            raise class_er.ClassAlreadyExistsError("Class already exists")
+            raise class_er.DuplicateClassError("Class already exists")
         self.class_repository.add_class(class_name)
         
     def get_all_classes(self):
@@ -31,8 +32,6 @@ class ClassService:
     
     def delete_class(self, class_id):
         class_ = self.get_class_by_id(class_id)
-        if not class_:
-            raise class_er.ClassNotFoundError("Class not found")
         if self.student_repository.count_students_in_class(class_id) > 0:
             raise class_er.ClassInUseError("Cannot delete class with students")
         sections = self.section_repository.get_sections_by_class(class_id)

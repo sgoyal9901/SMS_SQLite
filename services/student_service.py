@@ -3,7 +3,8 @@ from repositories.section_repo import SectionRepository
 from repositories.class_repo import ClassRepository
 from models.student import Student
 import utils.validators as val
-import exception.student as student_er
+import exceptions.student as student_er
+import math
 
 class StudentService:
     def __init__(self):
@@ -31,7 +32,7 @@ class StudentService:
         repo = self.repository
         self.validate_student_data(name, father_name, section_id, contact_number)
         if self.check_duplicate_student(name, father_name, contact_number):
-            raise student_er.StudentAlreadyExistsError("A student with the same name, father name, and contact number already exists.")
+            raise student_er.DuplicateStudentError("A student with the same name, father name, and contact number already exists.")
         roll_number = self.generate_roll_number(section_id)
         new_student = Student(
             name=name,
@@ -45,16 +46,47 @@ class StudentService:
         student = self.get_student_details(student_id)
         return student 
     
-    def get_all_students(self):
+    def get_all_students(self, page: int = 1, limit: int = 20, class_id: int | None = None,\
+                         section_id: int | None = None, search: str | None = None, sort: str="student_id", order: str = "asc"):
         repo = self.repository
-        students = repo.get_all_students()
-        if not students:
-            raise student_er.StudentNotFoundError("No students found")
+        if page < 1:
+            raise student_er.InvalidStudentDataError("Page number must be greater than 0")
+        if limit < 1:
+            raise student_er.InvalidStudentDataError("Limit must be greater than 0")
+        if limit > 100:
+            raise student_er.InvalidStudentDataError("Limit must be less than or equal to 100")
+        if class_id is not None:
+            val.val_class_id(class_id)
+            class_ = self.class_repository.get_class_by_id(class_id)
+            if not class_:
+                raise student_er.StudentNotFoundError("Class not found")
+        if section_id is not None:
+            val.val_section_id(section_id)
+            section = self.section_repository.get_section_by_id(section_id)
+            if not section:
+                raise student_er.StudentNotFoundError("Section not found")
+        if search is not None:
+            search = search.strip()
+            if not search:
+                pass
+        if sort not in ["student_id", "name", "roll_number"]:
+            raise student_er.InvalidStudentDataError("Invalid sort parameter")
+        if order not in ["asc", "desc"]:
+            raise student_er.InvalidStudentDataError("Invalid order parameter")
+        students = repo.get_all_students(page, limit, class_id, section_id, search, sort, order)
         all_students = []
         for student in students:
             student = self.get_student_details(student.student_id)
             all_students.append(student)
-        return all_students
+        total = repo.get_all_students_count(class_id, section_id, search)
+        total_pages = math.ceil(total/limit)
+        return {
+            "page": page,
+            "limit": limit,
+            "total": total,
+            "total_pages": total_pages,
+            "data": all_students
+        }
     
     def get_student_by_id(self, student_id):
         val.val_student_id(student_id)

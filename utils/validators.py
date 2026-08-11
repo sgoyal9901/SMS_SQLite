@@ -31,6 +31,12 @@ def val_section_id(section_id):
         raise ValueError("Section_id cannot be empty.")
     if not isinstance(section_id, int):
         raise ValueError("Section_id must be an integer.")
+
+def val_class_id(class_id):
+    if not class_id:
+        raise ValueError("Class_id cannot be empty.")
+    if not isinstance(class_id, int):
+        raise ValueError("Class_id must be an integer.")
     
 
 def val_date(date):

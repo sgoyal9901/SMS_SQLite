@@ -14,3 +14,10 @@ class StudentResponse(BaseModel):
     section_name: str
     roll_number: int
     contact_number: str
+
+class StudentPaginationResponse(BaseModel):
+    page: int
+    limit: int
+    total: int
+    total_pages: int
+    data: list[StudentResponse]

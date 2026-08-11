@@ -48,16 +48,60 @@ class StudentRepository:
             contact_number=row[5]
         )
 
-    def get_all_students(self):
+    def _build_student_filter(self, class_id, section_id, search):
+        filters = []
+        parameter = []
+        if class_id:
+            filters.append('classes.class_id = ?')
+            parameter.append(class_id)
+        if section_id:
+            filters.append('sections.section_id = ?')
+            parameter.append(section_id)
+        if search:
+            filters.append('(name LIKE ? OR father_name LIKE ?)')
+            parameter.extend([f"%{search}%", f"%{search}%"])
+        return filters, parameter
+
+    def get_all_students(self, page: int=1, limit: int=20, class_id: int|None=None,\
+                          section_id: int|None=None, search: str|None=None,\
+                          sort: str="student_id", order: str="asc"):
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM students')
+            offset = (page - 1)*limit
+            quary = '''
+            SELECT * FROM students
+            JOIN sections ON students.section_id = sections.section_id
+            JOIN classes ON sections.class_id = classes.class_id
+            '''
+            filters, parameter = self._build_student_filter(class_id, section_id, search)
+            if filters:
+                quary += ' WHERE ' + ' AND '.join(filters)
+            quary += f' ORDER BY {sort} {order.upper()}'
+            quary += ' LIMIT ? OFFSET ?'
+            parameter.extend([limit, offset])
+            cursor.execute(quary, parameter)
             rows = cursor.fetchall()
             students = []
             for row in rows:
                 student = self.row_to_student(row)
                 students.append(student)
             return students
+
+    def get_all_students_count(self, class_id: int|None=None, section_id: int|None=None,\
+                               search: str|None=None):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            quary = '''
+            SELECT COUNT(*) FROM students
+            JOIN sections ON students.section_id = sections.section_id
+            JOIN classes ON sections.class_id = classes.class_id
+            '''
+            filters, parameter = self._build_student_filter(class_id, section_id, search)
+            if filters:
+                quary += ' WHERE ' + ' AND '.join(filters)
+            cursor.execute(quary, parameter)
+            count = cursor.fetchone()[0]
+            return count
     
     def get_student_by_id(self, student_id):
         with get_connection() as conn:

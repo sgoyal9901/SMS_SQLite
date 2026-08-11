@@ -2,8 +2,8 @@ from repositories.section_repo import SectionRepository
 from repositories.class_repo import ClassRepository
 from repositories.student_repo import StudentRepository
 from models.section import Section
-import exception.section as section_er
-import exception.class_ as class_er
+import exceptions.section as section_er
+import exceptions.class_ as class_er
 
 class SectionService:
     def __init__(self):
@@ -18,7 +18,7 @@ class SectionService:
         if not class_obj:
             raise class_er.ClassNotFoundError("No class found")
         if self.section_repository.get_section_by_name(section_name, class_id):
-            raise section_er.SectionAlreadyExistsError("Section already exists")
+            raise section_er.DuplicateSectionError("Section already exists")
         self.section_repository.add_section(section_name, class_id)
 
     def get_all_sections(self):

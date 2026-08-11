@@ -6,7 +6,7 @@ class StudentError(Exception):
 class StudentNotFoundError(StudentError):
     pass
 
-class StudentAlreadyExistsError(StudentError):
+class DuplicateStudentError(StudentError):
     pass
 
 class InvalidStudentDataError(StudentError):

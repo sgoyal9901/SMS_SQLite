@@ -6,7 +6,7 @@ class SectionNotFoundError(SectionError):
     pass
 
 
-class SectionAlreadyExistsError(SectionError):
+class DuplicateSectionError(SectionError):
     pass
 
 
